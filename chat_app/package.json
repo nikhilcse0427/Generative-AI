@@ -1,0 +1,18 @@
+{
+  "name": "chat_app",
+  "version": "1.0.0",
+  "description": "Chat web-app using gen-ai",
+  "license": "ISC",
+  "author": "Nikhil Verma",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node ./src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google/genai": "^1.42.0",
+    "dotenv": "^17.3.1",
+    "prompt-sync": "^4.2.0"
+  }
+}
