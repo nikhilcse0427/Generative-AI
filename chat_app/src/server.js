@@ -17,14 +17,14 @@ async function chatCompletion() {
     contents: context
   });
 
-  const responseMessage = response.text;
+  const responseMessage = response.text
 
   context.push({
-    role: "model",   // ✅ NOT assistant
+    role: "model",  
     parts: [{ text: responseMessage }]
   });
 
-  console.log("\nAI:", responseMessage);
+  console.log("\nAI:", responseMessage)
 }
 
 async function ai() {
