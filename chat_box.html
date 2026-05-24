@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Love Chat 💕</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 400px;
+      height: 550px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #ff4d6d;
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background: #fff5f7;
+    }
+
+    .message {
+      padding: 8px 12px;
+      margin: 8px;
+      border-radius: 10px;
+      max-width: 70%;
+    }
+
+    .user {
+      background: #ffb3c1;
+      align-self: flex-end;
+    }
+
+    .ai {
+      background: #ffe5ec;
+      align-self: flex-start;
+    }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e63956;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="header">💖 Love Chat (BF–GF)</div>
+
+  <div id="chat" class="chat-box"></div>
+
+  <div class="input-area">
+    <input id="input" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+const API_KEY = "AIzaSyBzn1565UuvLGm9ztsf0fPUaqzhiMOAwl4";
+
+const chatBox = document.getElementById("chat");
+
+let context = [
+  {
+    role: "user",
+    parts: [{ text: "You are a loving romantic boyfriend or girlfriend. Reply sweet, caring, emotional, cute, and short." }]
+  }
+];
+
+function addMessage(text, sender) {
+  const div = document.createElement("div");
+  div.className = "message " + sender;
+  div.innerText = text;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById("input");
+  const message = input.value.trim();
+
+  if (!message) return;
+
+  addMessage(message, "user");
+
+  context.push({
+    role: "user",
+    parts: [{ text: message }]
+  });
+
+  input.value = "";
+
+  try {
+    const res = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + API_KEY,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: context })
+      }
+    );
+
+    const data = await res.json();
+
+    const reply =
+      data.candidates[0].content.parts[0].text;
+
+    addMessage(reply, "ai");
+
+    context.push({
+      role: "model",
+      parts: [{ text: reply }]
+    });
+
+  } catch (err) {
+    addMessage("Oops! Love server busy 😭", "ai");
+  }
+}
+</script>
+
+</body>
+</html>

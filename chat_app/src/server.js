@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { GoogleGenAI } from "@google/genai";
-import promptSync from "prompt-sync";
+import { GoogleGenAI } from "@google/genai"
+import promptSync from "prompt-sync"
 
 const api_key = process.env.GEMINI_API_KEY;
 const googleAI = new GoogleGenAI({ apiKey: api_key });
